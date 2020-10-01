@@ -1,11 +1,24 @@
 {
-    "name": "to-do-list-api",
+    "name": "db-project-api",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "src/index.ts",
+    "nodemonConfig": {
+        "ignore": [
+            "**/*.test.ts",
+            "**/*.spec.ts",
+            ".git",
+            "node_modules"
+        ],
+        "watch": [
+            "src"
+        ],
+        "exec": "npm start",
+        "ext": "ts"
+    },
     "scripts": {
         "start": "ts-node src/index.ts",
-        "watch": "nodemon ./app.js",
+        "watch": "nodemon",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {

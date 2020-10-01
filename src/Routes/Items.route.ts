@@ -1,8 +1,5 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
 import { ItemSchema, ItemPatchSchema } from '../Schemas/Items';
-import { Item } from '../entity/Item';
-import { User } from '../entity/User';
 import * as basicAuth from 'express-basic-auth';
 
 let version = 1;
@@ -12,7 +9,7 @@ const router = require('express').Router();
 router.use(basicAuth({ authorizer: Authorizer, authorizeAsync: true }));
 
 async function Authorizer(username: string, password: string, cb: Function) {
-    let user = await getRepository(User).findOne({ where: { email: username } });
+    let user// = await getRepository(User).findOne({ where: { email: username } });
     if (user) {
         const userMatches = basicAuth.safeCompare(username, user.email)
         const passwordMatches = basicAuth.safeCompare(password, user.password)
@@ -22,7 +19,7 @@ async function Authorizer(username: string, password: string, cb: Function) {
 }
 
 router.get('', async (req: Request, res: Response): Promise<Response> => {
-    let items = await getRepository(Item).find();
+    let items //= await getRepository(Item).find();
 
     if (parseInt(<string>req.headers.etag) == version) {
         return res.status(304).send();
@@ -50,12 +47,12 @@ router.post('', async (req: basicAuth.IBasicAuthedRequest, res: Response): Promi
         return res.status(400).send(validation);
     }
 
-    let user = await getRepository(User).findOne({ where: { email: req.auth.user } });
+    let user// = await getRepository(User).findOne({ where: { email: req.auth.user } });
 
     validation.value.user = user; // Added the user to the object
 
-    const newItem = getRepository(Item).create(validation.value);
-    const result = await getRepository(Item).save(newItem);
+    //const newItem //= getRepository(Item).create(validation.value);
+    let result //= await getRepository(Item).save(newItem);
     version++;
 
     return res.status(201).send(result);
@@ -68,12 +65,12 @@ router.put('/:id', async (req: Request, res: Response): Promise<Response> => {
         return res.status(400).send(validation);
     }
 
-    let itemSelected = await getRepository(Item).findOne(parseInt(<string>req.params.id));
+    let itemSelected //= await getRepository(Item).findOne(parseInt(<string>req.params.id));
     if (itemSelected) {
 
         if (parseInt(<string>req.headers.etag) == itemSelected.version) {
-            const itemUpdated = getRepository(Item).merge(itemSelected, req.body);
-            const result = await getRepository(Item).save(itemUpdated);
+            //const itemUpdated = getRepository(Item).merge(itemSelected, req.body);
+            let result //= await getRepository(Item).save(itemUpdated);
             version++;
             return res.status(200).send(result);
         }
@@ -90,7 +87,7 @@ router.patch('/:id', async (req: Request, res: Response): Promise<Response> => {
         return res.status(400).send(validation);
     }
 
-    let itemSelected = await getRepository(Item).findOne(parseInt(<string>req.params.id));
+    let itemSelected //= await getRepository(Item).findOne(parseInt(<string>req.params.id));
     if (itemSelected) {
         if (parseInt(<string>req.headers.etag) == itemSelected.version) {
             if (validation.value.description) {
@@ -102,7 +99,7 @@ router.patch('/:id', async (req: Request, res: Response): Promise<Response> => {
             if (validation.value.dueDate) {
                 itemSelected.dueDate = validation.value.dueDate;
             }
-            const result = await getRepository(Item).save(itemSelected);
+            let result //= await getRepository(Item).save(itemSelected);
             version++;
             return res.status(200).send(result);
         }
@@ -114,13 +111,13 @@ router.patch('/:id', async (req: Request, res: Response): Promise<Response> => {
 
 router.delete('/:id', async (req: Request, res: Response): Promise<Response> => {
     const id = parseInt(<string>req.params.id);
-    const itemSelected = await getRepository(Item).findOne(id);
+    let itemSelected //= await getRepository(Item).findOne(id);
     if (!itemSelected) {
         return res.status(404).send(`There is no item with id: ${req.params.id}`)
     }
 
     if (parseInt(<string>req.headers.etag) == itemSelected.version) {
-        const result = await getRepository(Item).delete(id);
+        let result// = await getRepository(Item).delete(id);
         version++;
         return res.status(200).send();
     }

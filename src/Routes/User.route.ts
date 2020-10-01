@@ -11,7 +11,7 @@ router.post('/register', async (req: Request, res: Response): Promise<Response> 
     }
 
     // let user = await getRepository(User).findOne({ where: { email: req.body.email } });
-    if () {
+    if (1 == 1) {
         return res.status(409).send(`${req.body.email} is already on use by another user`)
     }
 
