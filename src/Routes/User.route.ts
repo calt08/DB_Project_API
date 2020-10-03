@@ -1,24 +1,36 @@
 import { Request, Response } from 'express';
-import { UserSchema } from '../Schemas/User';
+import { LoginSchema, RegisterSchema } from '../Schemas/User';
+import * as jwt from 'jsonwebtoken';
 
 const router = require('express').Router();
 
 router.post('/register', async (req: Request, res: Response): Promise<Response> => {
 
-    const validation = UserSchema.validate(req.body);
+    const validation = RegisterSchema.validate(req.body);
     if (validation.error) {
         return res.status(400).send(validation);
     }
 
-    // let user = await getRepository(User).findOne({ where: { email: req.body.email } });
-    if (1 == 1) {
-        return res.status(409).send(`${req.body.email} is already on use by another user`)
-    }
+    // Find if email is in use by another consumer
+    if (false) return res.status(409).send(`${req.body.email} is already on use by another user`)
 
-    // const newUser = getRepository(User).create(validation.value);
-    // const result = await getRepository(User).save(newUser);
+    // Add the user to the DB
 
     return res.status(201).send();
+});
+
+router.post('/login', async (req: Request, res: Response): Promise<Response> => {
+
+    const validation = LoginSchema.validate(req.body);
+    if (validation.error) return res.status(400).send(validation);
+
+    // Verify if the user exists
+
+    const user = req.body;
+
+
+    const accessToken = jwt.sign(user, 'SECRETVALUE')
+    return res.status(201).send(accessToken);
 });
 
 export default router;
