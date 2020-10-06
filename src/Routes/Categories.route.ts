@@ -13,3 +13,24 @@ router.get('', async (req: Request, res: Response): Promise<Response> => {
 });
 
 export default router;
+
+// pool.query("SELECT NOW()", (err, res) => {
+//     if (err) throw err;
+//     for (let row of res.rows) {
+//         console.log(row);
+//     }
+// });
+
+// pool.query("SELECT * FROM country", (err, res) => {
+//     if (err) throw err;
+//     for (let row of res.rows) {
+//         console.log(row);
+//     }
+// });
+
+// pool.query("INSERT INTO country(countryname) VALUES ('USA');", (err, res) => {
+//     if (err) throw err;
+//     for (let row of res.rows) {
+//         console.log(JSON.stringify(row));
+//     }
+// });

@@ -1,11 +1,41 @@
 import "reflect-metadata";
 import * as express from "express";
+import { Pool } from 'pg';
 
+require('dotenv').config()
 const app = express();
+
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    // ssl: {
+    //     rejectUnauthorized: false
+    // }
+})
+
+// pool.query("SELECT NOW()", (err, res) => {
+//     if (err) throw err;
+//     for (let row of res.rows) {
+//         console.log(row);
+//     }
+// });
+
+// pool.query("SELECT * FROM country", (err, res) => {
+//     if (err) throw err;
+//     for (let row of res.rows) {
+//         console.log(row);
+//     }
+// });
+
+// pool.query("INSERT INTO country(countryname) VALUES ('USA');", (err, res) => {
+//     if (err) throw err;
+//     for (let row of res.rows) {
+//         console.log(JSON.stringify(row));
+//     }
+// });
 
 //Middlewares
 app.use(express.json());
-//
+
 //Import Routes
 import userRoute from "./Routes/User.route";
 import categoriesRoute from "./Routes/Categories.route";
