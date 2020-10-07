@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { ItemSchema, ItemPatchSchema } from '../Schemas/Items';
-import { authenticateToken } from './auth';
+import { authenticateToken } from '../utils/auth.utils';
 
 const router = require('express').Router();
 router.use(authenticateToken);
