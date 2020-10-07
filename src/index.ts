@@ -1,22 +1,11 @@
 import "reflect-metadata";
 import * as express from "express";
-import pool from './utils/dbConnection.utils';
 
 require('dotenv').config()
 const app = express();
 
 //Middlewares
 app.use(express.json());
-
-
-
-pool.query("SELECT NOW()", (err, res) => {
-    if (err) throw err;
-    for (let row of res.rows) {
-        console.log(row);
-    }
-});
-
 
 //Import Routes
 import userRoute from "./Routes/User.route";

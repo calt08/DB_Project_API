@@ -1,37 +1,24 @@
 import { Request, Response } from 'express';
 import { authenticateToken } from '../utils/auth.utils';
+import pool from '../utils/dbConnection.utils';
 
 const router = require('express').Router();
 router.use(authenticateToken);
 
 router.get('', async (req: Request, res: Response): Promise<Response> => {
-    let items //= await getRepository(Item).find();
-
-    // SP to get all Items to the sell list or cart
+    let items = pool.query(""); // SP to get all Items to the sell list or cart
 
     return res.status(200).send({ items });
 });
 
 router.post('', async (req: Request, res: Response): Promise<Response> => {
-    let items //= await getRepository(Item).find();
-
-    // SP to add Item to the sell list or cart
-
+    let items = await pool.query(""); // SP to add Item to the sell list or cart
+    // We cant add items already added
     return res.status(200).send({ items });
 });
 
-router.delete('/:id', async (req: Request, res: Response): Promise<Response> => {
-    let items //= await getRepository(Item).find();
-
-    // SP to remove Item to the sell list or cart
-
-    return res.status(200).send({ items });
-});
-
-router.patch('/:id', async (req: Request, res: Response): Promise<Response> => {
-    let items //= await getRepository(Item).find();
-
-    // SP to add Item to the sell list or cart
+router.patch('/:itemid', async (req: Request, res: Response): Promise<Response> => {
+    let items = await pool.query("");// SP to modify amount of an Item on the cart
 
     return res.status(200).send({ items });
 });
