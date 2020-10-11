@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS Country(
 CREATE TABLE IF NOT EXISTS City(
 	idcity SERIAL PRIMARY KEY NOT NULL,
 	idcountry SERIAL,
-	provincename varchar(100),
+	cityname varchar(100),
 	CONSTRAINT fk_idcountry
       FOREIGN KEY(idcountry) 
 	  REFERENCES Country(idcountry)	
@@ -18,10 +18,11 @@ CREATE TABLE IF NOT EXISTS Customer (
    idcustomer SERIAL PRIMARY KEY NOT NULL,
    idcity SERIAL,
    email varchar(255) UNIQUE NOT NULL,
-   passwordc varchar(50) NOT NULL,
-   namec varchar(255) NOT NULL,
+   password varchar(50) NOT NULL,
+   name varchar(255) NOT NULL,
    lastname varchar(50) NOT NULL,
    address varchar(255),
+   is_admin boolean DEFAULT FALSE,
     CONSTRAINT fk_idcity
         FOREIGN KEY(idcity) 
         REFERENCES City(idcity)

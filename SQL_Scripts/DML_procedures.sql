@@ -3,7 +3,7 @@ CREATE OR REPLACE PROCEDURE public.create_city(
 	namep character varying)
 LANGUAGE 'sql'
 AS $$
-INSERT INTO city(idcountry,provincename) VALUES (numcountry,namep);
+INSERT INTO city(idcountry,cityname) VALUES (numcountry,namep);
 $$;
 
 CREATE OR REPLACE PROCEDURE public.create_country(
@@ -20,11 +20,12 @@ CREATE OR REPLACE PROCEDURE public.create_customer(
 	passwordc character varying,
 	namec character varying,
 	lastname character varying,
-	address character varying)
+	address character varying,
+    admin boolean DEFAULT FALSE)
 LANGUAGE 'sql'
 AS $$
-INSERT INTO customer(idcity, email, passwordc, namec, lastname, address)
-    VALUES(idcity, email, passwordc, namec,lastname,address);
+INSERT INTO customer(idcity, email, password, name, lastname, address, is_admin)
+    VALUES(idcity, email, passwordc, namec,lastname,address, admin);
 $$;
 
 

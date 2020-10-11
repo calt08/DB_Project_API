@@ -12,4 +12,5 @@ export const RegisterSchema = Joi.object().keys({
     name: Joi.string().max(50).required(),
     lastname: Joi.string().max(50).required(),
     address: Joi.string().max(255).required(),
+    admin: Joi.bool()
 })
