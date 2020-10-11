@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
 import { authenticateToken } from '../utils/auth.utils';
 import pool from '../utils/dbConnection.utils';
 
-const router = require('express').Router();
+const router: Router = require('express').Router();
 router.use(authenticateToken);
 
 router.get('', async (req: Request, res: Response): Promise<Response> => {

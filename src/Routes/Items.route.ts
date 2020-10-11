@@ -1,15 +1,14 @@
-import { Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
 import { ItemSchema, ItemPatchSchema } from '../Schemas/Items';
 import { authenticateToken } from '../utils/auth.utils';
 import pool from '../utils/dbConnection.utils';
 
-const router = require('express').Router();
+const router: Router = require('express').Router();
 router.use(authenticateToken);
 
 router.get('', async (req: Request, res: Response): Promise<Response> => {
     let items = await pool.query(""); // SP to get all Items
-
-    return res.status(200).send({ items });
+    return res.status(200).send(items);
 });
 
 router.get('/:categoryid', async (req: Request, res: Response): Promise<Response> => {

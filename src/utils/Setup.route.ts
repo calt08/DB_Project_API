@@ -1,16 +1,24 @@
-import { Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
+import * as fs from 'fs';
+import pool from '../utils/dbConnection.utils';
 
-const router = require('express').Router();
+const router: Router = require('express').Router();
 
-router.get('create', async (req: Request, res: Response): Promise<Response> => {
-    let items //= await getRepository(Item).find();
+router.get('/build', async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const TablesQueries = fs.readFileSync('SQL_Scripts/create_tables.sql').toString();
+        const DMLQueries = fs.readFileSync('SQL_Scripts/DML_procedures.sql').toString();
+        const tables = await pool.query(TablesQueries);
+        const SP = await pool.query(DMLQueries);
 
-    // SP to get all Items to the sell list or cart
+        return res.status(200).send({ msg: 'Tables and Stored Procedures created', tables, SP });
 
-    return res.status(200).send({ items });
+    } catch (error) {
+        return res.status(500).send({ msg: 'Something Unexpected happened', error })
+    }
 });
 
-router.get('drop', async (req: Request, res: Response): Promise<Response> => {
+router.get('/drop', async (req: Request, res: Response): Promise<Response> => {
     let items //= await getRepository(Item).find();
 
     // SP to get all Items to the sell list or cart
