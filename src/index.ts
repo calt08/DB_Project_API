@@ -14,6 +14,9 @@ import userRoute from "./Routes/User.route";
 import categoriesRoute from "./Routes/Categories.route";
 import itemsRoute from "./Routes/Items.route";
 import sellRoute from "./Routes/Sell.route";
+import invoicesRoute from "./Routes/Invoices.route";
+import locationRoute from "./Routes/Location.route";
+
 import setupRoute from "./utils/Setup.route";
 
 // Routes Middlewares
@@ -21,6 +24,8 @@ app.use("/customers", userRoute);
 app.use("/categories", categoriesRoute);
 app.use("/items", itemsRoute);
 app.use("/sell", sellRoute);
+app.use("/invoices", invoicesRoute);
+app.use("/country", locationRoute);
 
 app.use('/setup', setupRoute);
 

@@ -17,19 +17,20 @@ router.get('/:categoryid', async (req: Request, res: Response): Promise<Response
     return res.status(200).send({ items });
 });
 
-router.post('', async (req: Request, res: Response): Promise<Response> => {
+router.post('/:categoryid', async (req: Request, res: Response): Promise<Response> => {
     const validation = ItemSchema.validate(req.body);
+    if (validation.error) return res.status(400).send(validation.error.message);
 
-    if (validation.error) return res.status(400).send(validation);
+    let result = await pool.query("CALL create_item($1, $2, $3, $4, $5, $6, $7)",
+        [parseInt(<string>req.params.categoryid), validation.value.name, validation.value.price, validation.value.tax,
+        validation.value.photo, validation.value.description, validation.value.quantity]); //SP to add Item
 
-    let result = await pool.query(""); //SP to add Item
-
-    return res.status(201).send(result);
+    return res.status(201).send("Item created successfully");
 });
 
 router.patch('/:id', async (req: Request, res: Response): Promise<Response> => {
     const validation = ItemSchema.validate(req.body);
-    if (validation.error) return res.status(400).send(validation);
+    if (validation.error) return res.status(400).send(validation.error.message);
 
     let result = await pool.query(""); // SP to modify existance of an item
     return res.status(200).send(result);

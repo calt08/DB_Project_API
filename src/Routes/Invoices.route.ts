@@ -16,10 +16,4 @@ router.get('/:id', async (req: Request, res: Response): Promise<Response> => {
     return res.status(200).send(invoices);
 });
 
-router.post('', async (req: Request, res: Response): Promise<Response> => {
-    let result = await pool.query("insert into country(countryname) VALUES ($1)", ["Panama"]); // SP to create Invoice
-
-    return res.status(200).send(result);
-});
-
 export default router;

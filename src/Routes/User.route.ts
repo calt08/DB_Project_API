@@ -27,7 +27,10 @@ router.post('/register', async (req: Request, res: Response): Promise<Response> 
         [validation.value.idcity, validation.value.email, validation.value.password,
         validation.value.name, validation.value.lastname, validation.value.address]);
 
-    return res.status(201).send("Customer created successfully");
+    let newuser = await pool.query("SELECT * FROM Get_User($1)", [validation.value.email]);
+    let newSell = await pool.query("CALL create_sell($1)", [newuser.rows[0].idcustomer]);
+
+    return res.status(201).send("Customer and first Sell created successfully");
 });
 
 router.post('/login', async (req: Request, res: Response): Promise<Response> => {
