@@ -7,14 +7,14 @@ const router: Router = require('express').Router();
 router.use(authenticateToken);
 
 router.get('', async (req: Request, res: Response): Promise<Response> => {
-    let items = await pool.query(""); // SP to get all Items
-    return res.status(200).send(items);
+    let items = await pool.query("SELECT * FROM get_allitems()"); // SP to get all Items
+    return res.status(200).send(items.rows);
 });
 
 router.get('/:categoryid', async (req: Request, res: Response): Promise<Response> => {
-    let items = await pool.query(""); // SP to get all Items in a certain category
+    let items = await pool.query("SELECT * FROM get_items_cat($1)", [parseInt(<string>req.params.categoryid)]); // SP to get all Items in a certain category
 
-    return res.status(200).send({ items });
+    return res.status(200).send(items.rows);
 });
 
 router.post('/:categoryid', async (req: Request, res: Response): Promise<Response> => {
@@ -38,12 +38,11 @@ router.patch('/:id', async (req: Request, res: Response): Promise<Response> => {
 
 router.delete('/:id', async (req: Request, res: Response): Promise<Response> => {
     const id = parseInt(<string>req.params.id);
-    let itemSelected //= await getRepository(Item).findOne(id);
-    if (!itemSelected) return res.status(404).send(`There is no item with id: ${req.params.id}`);
+    const result = await pool.query(""); // SP to delete one item
+    if (result.rowCount == 0) return res.status(404).send(`There is no item with id: ${req.params.id}`);
     //If no rows are modified i can send a 404
     //That way I only have to do 1 request to the DB
 
-    const result = await pool.query(""); // SP to delete one item
     return res.status(200).send();
 });
 

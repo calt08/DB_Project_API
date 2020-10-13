@@ -7,7 +7,7 @@ const router: Router = require('express').Router();
 router.use(authenticateToken);
 
 router.get('', async (req: Request, res: Response): Promise<Response> => {
-    let categories = await pool.query("SELECT * FROM itemcategory"); // SP to get all categories
+    let categories = await pool.query("SELECT * FROM get_cat()"); // SP to get all categories
     return res.status(200).send(categories.rows);
 });
 

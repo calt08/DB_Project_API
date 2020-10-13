@@ -19,7 +19,7 @@ router.post('', async (req: Request, res: Response): Promise<Response> => {
     if (validation.error) return res.status(400).send(validation.error.message);
 
     let currentSell = await pool.query(""); // Function to get the sell a user is using at the moment
-    let items = await pool.query("CALL create_selldetails($1, $2, $3)", [currentSell.rows[0].idsell,]); // SP to create sell detail AKA to add Item to the sell list or cart
+    let items = await pool.query("CALL create_selldetails($1, $2, $3)", [currentSell.rows[0].idsell]); // SP to create sell detail AKA to add Item to the sell list or cart
     // We cant add items already added
     return res.status(200).send({ items });
 });
