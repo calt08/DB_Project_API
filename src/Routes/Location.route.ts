@@ -7,14 +7,14 @@ const router: Router = require('express').Router();
 router.use(authenticateToken);
 
 router.get('', async (req: Request, res: Response): Promise<Response> => {
-    let invoices = await pool.query("SELECT * FROM country"); // SP to get all Countries
-    return res.status(200).send(invoices.rows);
+    let countries = await pool.query("SELECT * FROM country"); // SP to get all Countries
+    return res.status(200).send(countries.rows);
 });
 
 router.get('/:idcountry/cities', async (req: Request, res: Response): Promise<Response> => {
-    let invoices = await pool.query("SELECT * FROM city"); // SP to get the cities of an specific country
+    let cities = await pool.query("SELECT * FROM city WHERE idcity = $1", [parseInt(<string>req.params.idcountry)]); // SP to get the cities of an specific country
 
-    return res.status(200).send(invoices);
+    return res.status(200).send(cities.rows);
 });
 
 router.post('', async (req: Request, res: Response): Promise<Response> => {

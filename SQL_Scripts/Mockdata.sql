@@ -44,13 +44,13 @@ CALL create_sell(4);
 CALL create_sell(5);
 
 CALL create_selldetails(1,1,1);
-CALL create_selldetails(2,2,1);
-CALL create_selldetails(3,3,1);
-CALL create_selldetails(4,4,1);
-CALL create_selldetails(5,5,1);
+CALL create_selldetails(1,2,5);
+CALL create_selldetails(1,3,1);
+CALL create_selldetails(2,4,1);
+CALL create_selldetails(2,5,1);
 
-CALL create_invoice(1, 1, TRUE);
-CALL create_invoice(2, 2, TRUE);
-CALL create_invoice(3, 2, TRUE);
-CALL create_invoice(4, 1, TRUE);
-CALL create_invoice(5, 1, TRUE);
+-- CALL create_invoice(1, 1, TRUE);
+-- CALL create_invoice(2, 2, TRUE);
+-- CALL create_invoice(3, 2, TRUE);
+-- CALL create_invoice(4, 1, TRUE);
+-- CALL create_invoice(5, 1, TRUE);

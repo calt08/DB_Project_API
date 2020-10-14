@@ -11,13 +11,19 @@ router.get('', async (req: Request, res: Response): Promise<Response> => {
     return res.status(200).send(items.rows);
 });
 
-router.get('/:categoryid', async (req: Request, res: Response): Promise<Response> => {
+router.get('/:itemid', async (req: Request, res: Response): Promise<Response> => {
     let items = await pool.query("SELECT * FROM get_items_cat($1)", [parseInt(<string>req.params.categoryid)]); // SP to get all Items in a certain category
 
     return res.status(200).send(items.rows);
 });
 
-router.post('/:categoryid', async (req: Request, res: Response): Promise<Response> => {
+router.get('/category/:categoryid', async (req: Request, res: Response): Promise<Response> => {
+    let items = await pool.query("SELECT * FROM get_items_cat($1)", [parseInt(<string>req.params.categoryid)]); // SP to get all Items in a certain category
+
+    return res.status(200).send(items.rows);
+});
+
+router.post('/category/:categoryid', async (req: Request, res: Response): Promise<Response> => {
     const validation = ItemSchema.validate(req.body);
     if (validation.error) return res.status(400).send(validation.error.message);
 

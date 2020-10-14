@@ -24,7 +24,7 @@ router.get('/build', async (req: Request, res: Response): Promise<Response> => {
 router.get('/drop', async (req: Request, res: Response): Promise<Response> => {
     let dropTables = await pool.query('DROP TABLE IF EXISTS city, country, customer, invoice, item, itemcategory, paymentmethod, sell, selldetails CASCADE;');
     let dropProcedures = await pool.query('DROP PROCEDURE IF EXISTS create_city, create_country, create_customer, create_invoice, create_item, create_itemcategory, create_paymentmethod, create_sell, create_selldetails;');
-    let dropFunctions = await pool.query('DROP FUNCTION IF EXISTS get_user, get_sell, get_allitems, get_cat, get_items_cat;');
+    let dropFunctions = await pool.query('DROP FUNCTION IF EXISTS get_user, get_sell, get_allitems, get_cat, get_items_cat, get_item, items_in_sell, all_invoices;');
 
     return res.status(200).send('Tables, procedures and functions were droped successfully');
 });

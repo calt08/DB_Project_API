@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS Customer (
 CREATE TABLE IF NOT EXISTS Sell( 
 	idsell SERIAL PRIMARY KEY NOT NULL,
 	idcustomer SERIAL NOT NULL,
-	datesell DATE DEFAULT CURRENT_DATE,
+	datesell TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT fk_idcustomer
       FOREIGN KEY(idcustomer) 
 	  REFERENCES Customer(idcustomer)
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS Invoice(
 	idinvoice SERIAL PRIMARY KEY NOT NULL,
 	idsell SERIAL,
 	idpaymentmethod SERIAL,
-	orderdate DATE DEFAULT CURRENT_DATE,
+	orderdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	approved boolean NOT NULL,
 	CONSTRAINT fk_idsell
       FOREIGN KEY(idsell) 
