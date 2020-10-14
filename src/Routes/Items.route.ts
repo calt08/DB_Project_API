@@ -4,7 +4,7 @@ import { authenticateToken } from '../utils/auth.utils';
 import pool from '../utils/dbConnection.utils';
 
 const router: Router = require('express').Router();
-router.use(authenticateToken);
+// router.use(authenticateToken);
 
 router.get('', async (req: Request, res: Response): Promise<Response> => {
     let items = await pool.query("SELECT * FROM get_allitems()"); // SP to get all Items

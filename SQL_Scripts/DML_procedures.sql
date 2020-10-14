@@ -91,3 +91,6 @@ INSERT INTO selldetails(idsell, iditem, quantity)
 VALUES (idsel, idtem,quant)
 $$;
 
+
+-- UPDATE
+

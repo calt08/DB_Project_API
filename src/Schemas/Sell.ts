@@ -2,7 +2,11 @@ import * as Joi from "joi";
 
 export const InvoiceSchema = Joi.object().keys({
     paymentmethod: Joi.number().positive().required(),
-    user: Joi.required()
+    idcustomer: Joi.number().positive().required()
+})
+
+export const CustomerSchema = Joi.object().keys({
+    idcustomer: Joi.number().positive().required()
 })
 
 export const paymentmethodSchema = Joi.object().keys({
@@ -11,7 +15,8 @@ export const paymentmethodSchema = Joi.object().keys({
 
 export const SellDetailSchema = Joi.object().keys({
     iditem: Joi.number().positive().required(),
-    quantity: Joi.number().positive().required()
+    quantity: Joi.number().positive().required(),
+    idcustomer: Joi.number().positive().required()
 })
 
 // export const SellSchema = Joi.object().keys({

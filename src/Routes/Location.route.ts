@@ -4,7 +4,7 @@ import pool from '../utils/dbConnection.utils';
 import { LocationSchema } from '../Schemas/Location';
 
 const router: Router = require('express').Router();
-router.use(authenticateToken);
+// router.use(authenticateToken);
 
 router.get('', async (req: Request, res: Response): Promise<Response> => {
     let countries = await pool.query("SELECT * FROM country"); // SP to get all Countries

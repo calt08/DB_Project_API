@@ -1,14 +1,16 @@
 import { Request, Response, Router } from 'express';
 import { authenticateToken } from '../utils/auth.utils';
 import pool from '../utils/dbConnection.utils';
-import { InvoiceSchema, paymentmethodSchema, SellDetailSchema } from '../Schemas/Sell';
+import { InvoiceSchema, paymentmethodSchema, SellDetailSchema, CustomerSchema } from '../Schemas/Sell';
 
 const router: Router = require('express').Router();
-router.use(authenticateToken);
+// router.use(authenticateToken);
 
 router.get('', async (req: Request, res: Response): Promise<Response> => {
+    const validation = CustomerSchema.validate(req.body);
+    if (validation.error) return res.status(400).send(validation.error.message);
 
-    let currentSell = await pool.query("SELECT * FROM get_sell($1)", [parseInt(<string>req.body.user.idcustomer)]); // Function to get the sell a user is using at the moment
+    let currentSell = await pool.query("SELECT * FROM get_sell($1)", [parseInt(<string>validation.value.idcustomer)]); // Function to get the sell a user is using at the moment
     let items = await pool.query("SELECT * FROM items_in_sell($1)", [currentSell.rows[0].idsell]); // SP to get all Items to the sell list or cart
 
     return res.status(200).send(items.rows);
@@ -18,7 +20,7 @@ router.post('', async (req: Request, res: Response): Promise<Response> => {
     const validation = SellDetailSchema.validate(req.body);
     if (validation.error) return res.status(400).send(validation.error.message);
 
-    let currentSell = await pool.query("SELECT * FROM get_sell($1)", [parseInt(<string>req.body.user.idcustomer)]); // Function to get the sell a user is using at the moment
+    let currentSell = await pool.query("SELECT * FROM get_sell($1)", [parseInt(<string>validation.value.idcustomer)]); // Function to get the sell a user is using at the moment
     let items = await pool.query("CALL create_selldetails($1, $2, $3)", [currentSell.rows[0].idsell,
     parseInt(<string>validation.value.iditem), parseInt(<string>validation.value.quantity)]); // SP to create sell detail AKA to add Item to the sell list or cart
     // We cant add items already added
@@ -35,9 +37,9 @@ router.post('/pay', async (req: Request, res: Response): Promise<Response> => {
     const validation = InvoiceSchema.validate(req.body);
     if (validation.error) return res.status(400).send(validation);
 
-    let currentSell = await pool.query("SELECT * FROM get_sell($1)", [parseInt(<string>req.body.user.idcustomer)]); // Function to get the sell a user is using at the moment
-    let invoice = await pool.query("CALL create_invoice($1, $2, $3)", [currentSell.rows[0].idsell, parseInt(req.body.paymentmethod), true]); // Function to create invoice with the sell currently in use
-    let newSell = await pool.query("CALL create_sell($1)", [parseInt(<string>req.body.user.idcustomer)]) // Function to create new sell after the previous one is paid
+    let currentSell = await pool.query("SELECT * FROM get_sell($1)", [parseInt(<string>validation.value.idcustomer)]); // Function to get the sell a user is using at the moment
+    let invoice = await pool.query("CALL create_invoice($1, $2, $3)", [currentSell.rows[0].idsell, parseInt(validation.value.paymentmethod), true]); // Function to create invoice with the sell currently in use
+    let newSell = await pool.query("CALL create_sell($1)", [parseInt(<string>validation.value.idcustomer)]) // Function to create new sell after the previous one is paid
 
 
     // need to update the quantity of the items sold

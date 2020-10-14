@@ -4,7 +4,7 @@ import { CategorySchema } from '../Schemas/Category';
 import pool from '../utils/dbConnection.utils';
 
 const router: Router = require('express').Router();
-router.use(authenticateToken);
+// router.use(authenticateToken);
 
 router.get('', async (req: Request, res: Response): Promise<Response> => {
     let categories = await pool.query("SELECT * FROM get_cat()"); // SP to get all categories

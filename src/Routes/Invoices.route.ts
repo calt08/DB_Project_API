@@ -1,12 +1,16 @@
 import { Request, Response, Router } from 'express';
 import { authenticateToken } from '../utils/auth.utils';
 import pool from '../utils/dbConnection.utils';
+import { CustomerSchema } from '../Schemas/Sell';
 
 const router: Router = require('express').Router();
-router.use(authenticateToken);
+// router.use(authenticateToken);
 
 router.get('', async (req: Request, res: Response): Promise<Response> => {
-    let invoices = await pool.query("SELECT * FROM all_invoices($1)", [parseInt(<string>req.body.user.idcustomer)]); // SP to get all Invoices
+    const validation = CustomerSchema.validate(req.body);
+    if (validation.error) return res.status(400).send(validation.error.message);
+
+    let invoices = await pool.query("SELECT * FROM all_invoices($1)", [parseInt(<string>req.body.idcustomer)]); // SP to get all Invoices
     return res.status(200).send(invoices.rows);
 });
 

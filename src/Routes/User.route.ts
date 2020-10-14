@@ -44,7 +44,7 @@ router.post('/login', async (req: Request, res: Response): Promise<Response> => 
     if (result.rows[0].password != validation.value.password) return res.status(401).send(`Invalid Email or password`);
 
     const accessToken = jwt.sign(result.rows[0], 'SECRETVALUE')
-    return res.status(201).send(accessToken);
+    return res.status(201).send(result.rows[0]);
 });
 
 export default router;
