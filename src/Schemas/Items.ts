@@ -1,7 +1,7 @@
 import * as Joi from "joi";
 
 export const ItemSchema = Joi.object().keys({
-    name: Joi.string().max(100).required(),
+    itemname: Joi.string().max(100).required(),
     price: Joi.number().required(),
     tax: Joi.number().required(),
     photo: Joi.string().required(),
@@ -10,7 +10,7 @@ export const ItemSchema = Joi.object().keys({
 })
 
 export const ItemPatchSchema = Joi.object().keys({
-    name: Joi.string().max(100),
+    itemname: Joi.string().max(100),
     price: Joi.number(),
     tax: Joi.number(),
     photo: Joi.string(),

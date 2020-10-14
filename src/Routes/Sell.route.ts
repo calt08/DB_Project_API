@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { authenticateToken } from '../utils/auth.utils';
 import pool from '../utils/dbConnection.utils';
-import { InvoiceSchema, paymentmethodSchema, SellDetailSchema, CustomerSchema } from '../Schemas/Sell';
+import { InvoiceSchema, paymentmethodSchema, SellDetailSchema, CustomerSchema, SellDetailPatchSchema } from '../Schemas/Sell';
 
 const router: Router = require('express').Router();
 // router.use(authenticateToken);
@@ -27,10 +27,14 @@ router.post('', async (req: Request, res: Response): Promise<Response> => {
     return res.status(200).send(`${validation.value.quantity} Items ID: ${validation.value.iditem} added to sell`);
 });
 
-router.patch('/:itemid', async (req: Request, res: Response): Promise<Response> => {
-    let items = await pool.query("");// SP to modify amount of an Item on the cart
+router.patch('/:idselldetail', async (req: Request, res: Response): Promise<Response> => {
+    const validation = SellDetailPatchSchema.validate(req.body);
+    if (validation.error) return res.status(400).send(validation.error.message);
 
-    return res.status(200).send({ items });
+    let idselldetail = parseInt(<string>req.params.idselldetail);
+    await pool.query("CALL update_selldetails_quantity($1, $2)", [idselldetail, parseInt(validation.value.quantity)]); // SP to modify amount of an Item on the cart
+
+    return res.status(200).send('Amount of sell detail updated successfully');
 });
 
 router.post('/pay', async (req: Request, res: Response): Promise<Response> => {
@@ -38,7 +42,7 @@ router.post('/pay', async (req: Request, res: Response): Promise<Response> => {
     if (validation.error) return res.status(400).send(validation);
 
     let currentSell = await pool.query("SELECT * FROM get_sell($1)", [parseInt(<string>validation.value.idcustomer)]); // Function to get the sell a user is using at the moment
-    let invoice = await pool.query("CALL create_invoice($1, $2, $3)", [currentSell.rows[0].idsell, parseInt(validation.value.paymentmethod), true]); // Function to create invoice with the sell currently in use
+    let invoice = await pool.query("CALL create_invoice($1, $2, $3)", [currentSell.rows[0].idsell, parseInt(validation.value.idpaymentmethod), true]); // Function to create invoice with the sell currently in use
     let newSell = await pool.query("CALL create_sell($1)", [parseInt(<string>validation.value.idcustomer)]) // Function to create new sell after the previous one is paid
 
 

@@ -94,3 +94,80 @@ $$;
 
 -- UPDATE
 
+
+--Update Item Name.
+CREATE OR REPLACE PROCEDURE public.update_item_name(
+	itemid integer,
+	itemnam character varying)
+LANGUAGE 'sql'
+AS $$
+UPDATE item 
+SET itemname = itemnam
+WHERE iditem = itemid;
+$$;
+
+--Update Item Price.
+CREATE OR REPLACE PROCEDURE public.update_item_price(
+	itemid integer,
+	newprice numeric)
+LANGUAGE 'sql'
+AS $$
+UPDATE item 
+SET price = newprice
+WHERE iditem = itemid;
+$$;
+
+--Update Item Tax
+CREATE OR REPLACE PROCEDURE public.update_item_tax(
+	itemid integer,
+	newtax numeric)
+LANGUAGE 'sql'
+AS $$
+UPDATE item 
+SET tax = newtax
+WHERE iditem = itemid;
+$$;
+
+--Update Item Photo
+CREATE OR REPLACE PROCEDURE public.update_item_photo(
+	itemid integer,
+	newphoto bytea)
+LANGUAGE 'sql'
+AS $$
+UPDATE item 
+SET photo = newphoto
+WHERE iditem = itemid;
+$$;
+
+--Update Item Description
+CREATE OR REPLACE PROCEDURE public.update_item_description(
+	itemid integer,
+	newdescription text)
+LANGUAGE 'sql'
+AS $$
+UPDATE item 
+SET description = newdescription
+WHERE iditem = itemid;
+$$;
+
+--Update Item Quantity
+CREATE OR REPLACE PROCEDURE public.update_item_quantity(
+	itemid integer,
+	newquantity integer)
+LANGUAGE 'sql'
+AS $$
+UPDATE item 
+SET quantity = newquantity
+WHERE iditem = itemid;
+$$;
+
+--Update Sell detail Quantity
+CREATE OR REPLACE PROCEDURE public.update_selldetails_quantity(
+	idsd integer,
+	newquantity integer)
+LANGUAGE 'sql'
+AS $$
+UPDATE selldetails 
+SET quantity = newquantity
+WHERE idselldetails = idsd;
+$$;
